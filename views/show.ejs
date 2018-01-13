@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include head.ejs %>
+  </head>
+  <body>
+    <header>
+      <% include header.ejs %>
+    </header>
+    <main>
+      <div class="container">
+        <div class="jumbotron">
+          <h1><%=type%></h1>
+          <form action="/show/time" method="post">
+            <div class="row">
+              <h3><a href="/">Home</a></h3>
+            </div>
+            <div class="row">
+              
+              <h3><a href="/getdata/<%=type%>">Get Data from Sensor</a></h3>
+            </div>
+            <input name="type" type="text" value="<%=type%>" />
+            <table >
+              <tbody>
+                <tr>
+                  <td colspan="2">Start Hour</td>
+                  <td colspan="2"><input type="number" name="starthours"  /></td>
+                  <td colspan="2">Minute</td>
+                  <td colspan="2"><input type="number" name="startmins" /></td>
+                </tr>
+                <tr>
+                  <td colspan="2">Stop Hour</td>
+                  <td colspan="2"><input type="number" name="stophours"  /></td>
+                  <td colspan="2">Minute</td>
+                  <td colspan="2"><input type="number" name="stopmins" /></td>
+                </tr>
+                <tr>
+                  <td colspan="2"><button type="submit">Find</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+        </div>
+      </div>
+      <div class= "content-wrapper">
+        <div class="container-fluid">
+               <div class="card mb-3">
+
+    
+
+          <% if(Datas.length>0) { %>
+          <table class ="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Date and Time</th>
+                <th>Team ID</th>
+                <th>Sensor ID</th>
+                <% if(type === "accelerometer") { %>
+                <th>Value X-Axis</th>
+                <th>Value Y-Axis</th>
+                <th>Value Z-Axis</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(var i=Datas.length-1; i>=0;i--) { %>
+              <tr>
+                <td><%= Datas[i].date %></td>
+                <td><%= Datas[i].teamID %></td>
+                <td><%= Datas[i].sensID %></td>
+                <td><%= (Math.round(Datas[i].val_x*100))/100 %></td>
+                <td><%= (Math.round(Datas[i].val_y*100))/100 %></td>
+                <td><%= (Math.round(Datas[i].val_z*100))/100 %></td>
+              </tr>
+              <% } %>
+            </tbody>
+            <% } else { %>
+            <th>Value</th>
+            <tbody>
+            </tr>
+            <% for(var i=Datas.length-1; i>=0;i--) { %>
+            <tr>
+              <td><%= Datas[i].date %></td>
+              <td><%= Datas[i].teamID %></td>
+              <td><%= Datas[i].sensID %></td>
+              <td><%= Datas[i].val %></td>
+            </tr>
+            <% } %>
+          </tbody>
+          <% } %>
+        </table>
+        <% } else { %>
+        <div>No Data Found.</div>
+        <% } %>
+
+        
+
+    </div>
+      
+    </div>
+  </main>
+  <footer>
+    <% include footer.ejs %>
+  </footer>
+</body>
+</html>
